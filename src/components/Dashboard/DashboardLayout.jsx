@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import Stats from "./Stats";
+import DurationChart from "./DurationChart";
+import SalesChart from "./SalesChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -8,7 +11,13 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  return <StyledDashboardLayout></StyledDashboardLayout>;
+  return (
+    <StyledDashboardLayout>
+      <Stats />
+      <DurationChart />
+      <SalesChart />
+    </StyledDashboardLayout>
+  );
 }
 
 export default DashboardLayout;

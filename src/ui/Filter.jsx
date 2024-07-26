@@ -28,8 +28,8 @@ const FilterButton = styled.button`
   transition: all 0.3s;
 
   &:hover:not(:disabled) {
-    background-color: var(--color-grey-600);
-    color: var(--color-grey-50);
+    background-color: var(--color-brand-600);
+    color: var(--color-brand-50);
   }
 `;
 
