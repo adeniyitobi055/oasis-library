@@ -3,12 +3,13 @@ import React from "react";
 // import LoginForm from "./components/Auth/LoginForm";
 import GlobalStyles from "./styles/GlobalStyles";
 import Login from "./pages/Login";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
 import Books from "./pages/Books";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 function App() {
   const queryClient = new QueryClient({
@@ -22,10 +23,18 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
-          <Route path="layout" element={<AppLayout />} />
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="applayout" element={<AppLayout />} />
+          {/*  <Route index element={<Navigate replace to="dashboard" />} /> */}
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="login" element={<Login />} />
           <Route path="books" element={<Books />} />
-          <Route path="dashboard" element={<Dashboard />} />
           <Route path="issues" />
         </Routes>
 
