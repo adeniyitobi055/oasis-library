@@ -10,6 +10,9 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import PageNotFound from "./pages/PageNotFound";
+import Users from "./pages/Users";
+import Issues from "./pages/Issues";
 
 function App() {
   const queryClient = new QueryClient({
@@ -29,13 +32,16 @@ function App() {
                 <AppLayout />
               </ProtectedRoute>
             }
-          />
-          <Route path="applayout" element={<AppLayout />} />
-          {/*  <Route index element={<Navigate replace to="dashboard" />} /> */}
-          <Route path="dashboard" element={<Dashboard />} />
+          >
+            {/* <Route path="applayout" element={<AppLayout />} /> */}
+            <Route index element={<Navigate replace to="dashboard" />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="books" element={<Books />} />
+            <Route path="issues" element={<Issues />} />
+            <Route path="users" element={<Users />} />
+          </Route>
           <Route path="login" element={<Login />} />
-          <Route path="books" element={<Books />} />
-          <Route path="issues" />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
 
         <Toaster

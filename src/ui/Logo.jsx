@@ -27,12 +27,12 @@ const StyledLogoIcon = styled.div`
 
 const StyledLogoText = styled.p`
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-family: "Poppins", sans-serif;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--color-brand-900);
+  color: var(--color-grey-800);
 `;
 
 function Logo() {

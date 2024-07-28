@@ -62,27 +62,27 @@ function MainNav() {
     <nav>
       <NavList>
         <li>
-          <StyledNavLink>
+          <StyledNavLink to="/dashboard">
             <HiOutlineHome />
             <span>Home</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink>
+          <StyledNavLink to="issues">
             <GiBlackBook />
             <span>Issues</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink>
+          <StyledNavLink to="/books">
             <HiOutlineBookOpen />
             <span>Books</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink>
+          <StyledNavLink to="users">
             <HiOutlineUsers />
-            <span>User</span>
+            <span>Users</span>
           </StyledNavLink>
         </li>
       </NavList>
