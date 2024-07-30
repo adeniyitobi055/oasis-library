@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUpdateBook } from "../../services/apiBooks";
+import { deleteBook as deleteBookApi } from "../../services/apiBooks";
 import toast from "react-hot-toast";
 
-export function useCreateBook() {
+export function useDeleteBook() {
   const queryClient = useQueryClient();
 
-  const { mutate: createBook, isLoading: isCreating } = useMutation({
-    mutationFn: createUpdateBook,
+  const { mutate: deleteBook, isLoading: isDeleting } = useMutation({
+    mutationFn: deleteBookApi,
     onSuccess: () => {
-      toast.success("New book succesfully created");
+      toast.success("Book successfully deleted");
       queryClient.invalidateQueries({ queryKey: ["books"] });
     },
     onError: (err) => toast.error(err.message),
   });
 
-  return { createBook, isCreating };
+  return { deleteBook, isDeleting };
 }

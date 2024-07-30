@@ -8,7 +8,7 @@ import {
   HiOutlineBookOpen,
 } from "react-icons/hi2";
 import { GiBlackBook } from "react-icons/gi";
-
+import { FaUsers } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 // import { HiOutlineBookmarkAlt } from "react-icons/hi";
 
@@ -77,6 +77,12 @@ function MainNav() {
           <StyledNavLink to="/books">
             <HiOutlineBookOpen />
             <span>Books</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/members">
+            <FaUsers />
+            <span>Members</span>
           </StyledNavLink>
         </li>
         <li>

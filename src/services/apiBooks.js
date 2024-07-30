@@ -5,35 +5,34 @@ export async function getBooks() {
 
   if (error) {
     console.error(error);
-    throw new Error("Books could notbe loaded");
+    throw new Error("Books could not be loaded");
   }
 
   return data;
 }
 
 export async function createUpdateBook(newBook, id) {
-  console.log("New book", newBook);
   const hasImagePath = newBook.image?.startsWith?.(supabaseUrl);
 
   const imageName = `${Math.random()}-${newBook.image.name}`.replaceAll(
     "/",
     ""
   );
-  // https://sxjrblxebuuhivtoconi.supabase.co/storage/v1/object/public/book-images/the%2048%20laws%20of%20power.png?t=2024-07-25T10%3A28%3A59.916Z
+
   const imagePath = hasImagePath
     ? newBook.image
     : `${supabaseUrl}/storage/v1/object/public/book-images/${imageName}`;
 
-  // 1. Create/edit cabin
+  // 1. Create/edit book
   let query = supabase.from("books");
 
   // A) CREATE
-  if (!id) query.insert([{ ...newBook, image: imagePath }]);
+  if (!id) query = query.insert([{ ...newBook, image: imagePath }]);
 
   //   B) UPDATE
-  if (id) query.update([{ ...newBook, image: imagePath }]).eq("id", id);
+  if (id) query = query.update([{ ...newBook, image: imagePath }]).eq("id", id);
 
-  const { data, error } = await query.select();
+  const { data, error } = await query.select().single();
 
   if (error) {
     console.error(error);
@@ -46,7 +45,7 @@ export async function createUpdateBook(newBook, id) {
     .from("book-images")
     .upload(imageName, newBook.image);
 
-  // 3. Delete the cabin If there was an error uploading image
+  // 3. Delete the book If there was an error uploading image
   if (storageError) {
     await supabase.from("books").delete().eq("id", data.id);
     console.error(storageError);

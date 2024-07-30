@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBooks } from "../../services/apiBooks";
 
-function useBooks() {
+export function useBooks() {
   const {
     isLoading,
     data: books,
@@ -12,5 +12,3 @@ function useBooks() {
   });
   return { isLoading, error, books };
 }
-
-export default useBooks;

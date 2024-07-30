@@ -7,7 +7,7 @@ function AddBook() {
     <div>
       <Modal>
         <Modal.Open opens="book-form">
-          <Button>Add a new book</Button>
+          <Button>Add new book</Button>
         </Modal.Open>
         <Modal.Window name="book-form">
           <CreateBookForm />

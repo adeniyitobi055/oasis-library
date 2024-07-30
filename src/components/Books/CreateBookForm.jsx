@@ -5,29 +5,48 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Textarea from "../../ui/Textarea";
 import FileInput from "../../ui/FileInput";
-import useCreateBook from "./useCreateBook";
+import { useCreateBook } from "./useCreateBook";
+import { useUpdateBook } from "./useUpdateBook";
 // import { useState } from "react";
 
-function CreateBookForm({ onCloseModal }) {
+function CreateBookForm({ bookToEdit = {}, onCloseModal }) {
   const { isCreating, createBook } = useCreateBook();
+  const { isEditing, editBook } = useUpdateBook();
 
-  const { handleSubmit, reset, formState, register } = useForm();
+  const { id: editId, ...editValues } = bookToEdit;
+  const isEditSession = Boolean(editId);
+
+  const isWorking = isCreating || isEditing;
+
+  const { handleSubmit, reset, formState, register } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
   const { errors } = formState;
 
   function onSubmit(data) {
-    console.log("Data: ", data);
     const image = typeof data.image === "string" ? data.image : data.image[0];
-    console.log("Image: ", image);
 
-    createBook(
-      { ...data, image: image },
-      {
-        onSuccess: (data) => {
-          reset();
-          onCloseModal?.();
-        },
-      }
-    );
+    if (isEditSession) {
+      editBook(
+        { newBookData: { ...data, image }, id: editId },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    } else {
+      createBook(
+        { ...data, image: image },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    }
   }
 
   function onError(errors) {
@@ -39,12 +58,12 @@ function CreateBookForm({ onCloseModal }) {
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="Name" error={errors?.bookName?.message}>
+      <FormRow label="Name" error={errors?.name?.message}>
         <Input
           type="text"
           id="name"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           placeholder="The 48 laws of power"
           {...register("name", { required: "This field is required" })}
         />
@@ -55,7 +74,7 @@ function CreateBookForm({ onCloseModal }) {
           type="text"
           id="author"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           placeholder="Robert Greene"
           {...register("author", { required: "This field is required" })}
         />
@@ -66,7 +85,7 @@ function CreateBookForm({ onCloseModal }) {
           type="text"
           id="isbn"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           placeholder="ISBN 0-061-96436-0"
           {...register("isbn", { required: "This field is required" })}
         />
@@ -78,7 +97,7 @@ function CreateBookForm({ onCloseModal }) {
           id="rackNum"
           defaultValue=""
           placeholder="Tn-4"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("rackNum", { required: "This field is required" })}
         />
       </FormRow>
@@ -89,7 +108,7 @@ function CreateBookForm({ onCloseModal }) {
           id="category"
           defaultValue=""
           placeholder="Psychology"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("category", { required: "This field is required" })}
         />
       </FormRow>
@@ -98,7 +117,7 @@ function CreateBookForm({ onCloseModal }) {
         <Textarea
           id="description"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           placeholder="The 48 Laws of Power offers a view on gaining power that warrants a critical psychological analysis"
           {...register("description", { required: "This field is required" })}
         />
@@ -108,8 +127,10 @@ function CreateBookForm({ onCloseModal }) {
         <FileInput
           id="image"
           accept="image/*"
-          disabled={isCreating}
-          {...register("image", { required: "This field is required" })}
+          disabled={isWorking}
+          {...register("image", {
+            required: isEditSession ? false : "This field is required",
+          })}
         />
       </FormRow>
 
@@ -121,7 +142,9 @@ function CreateBookForm({ onCloseModal }) {
         >
           Cancel
         </Button>
-        <Button disabled={isCreating}>Add new book</Button>
+        <Button disabled={isWorking}>
+          {isEditSession ? "Edit book" : "Add new book"}
+        </Button>
       </FormRow>
     </Form>
   );
