@@ -12,7 +12,7 @@ const Img = styled.img`
   display: block;
   width: 6.5rem;
   /* height: 4rem; */
-  aspect-ratio: 3 / 2.3;
+  aspect-ratio: 3 / 2;
   object-position: center;
   object-fit: contain;
   transform: scale(1.5) translateX(-7px);
@@ -53,12 +53,12 @@ const Category = styled.div`
   font-family: "Sono";
 `;
 
-const Description = styled.div`
+/* const Description = styled.div`
   font-size: 1.3rem;
   font-weight: 400;
   color: var(--color-grey-600);
   font-family: "Sono";
-`;
+`; */
 
 function BookRow({ book }) {
   const { isCreating, createBook } = useCreateBook();
@@ -96,7 +96,6 @@ function BookRow({ book }) {
       <Isbn>{isbn}</Isbn>
       <Rack>{rackNum}</Rack>
       <Category>{category}</Category>
-      <Description>{description}</Description>
       <div>
         <Modal>
           <Menus.Menu>

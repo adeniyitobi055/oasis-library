@@ -1,5 +1,19 @@
 import supabase from "./supabase";
 
+export async function fetchCountries() {
+  const response = await fetch("https://restcountries.com/v3.1/all");
+  if (!response.ok) {
+    throw new Error("Failed to fetch countries");
+  }
+  const countries = await response.json();
+
+  return countries.map((country) => ({
+    name: country.name.common,
+    flag: country.flags.svg,
+    id: country.cca3,
+  }));
+}
+
 export async function getMembers() {
   const { data, error } = await supabase.from("members").select("*");
 
@@ -12,6 +26,13 @@ export async function getMembers() {
 }
 
 export async function createUpdateMember(newMember, id) {
+  // Fetch country data
+  const countries = await fetchCountries();
+  const country = countries.find((c) => c.name === newMember.country);
+  const countryFlag = country?.flag || "";
+
+  newMember.countryFlag = countryFlag;
+
   // .1 Create/Edit member
   let query = supabase.from("members");
 

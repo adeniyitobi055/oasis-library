@@ -1,5 +1,6 @@
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
+import CreateMembershipForm from "./CreateMembershipForm";
 
 function AddMember() {
   return (
@@ -8,7 +9,9 @@ function AddMember() {
         <Modal.Open opens="member-form">
           <Button>Add new member</Button>
         </Modal.Open>
-        <Modal.Window name="member-form"></Modal.Window>
+        <Modal.Window name="member-form">
+          <CreateMembershipForm />
+        </Modal.Window>
       </Modal>
     </div>
   );

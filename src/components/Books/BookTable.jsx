@@ -29,7 +29,7 @@ function BookTable() {
 
   return (
     <Menus>
-      <Table columns="0.6fr 1.8fr 1.3fr 1.8fr 0.7fr 1fr 2fr 0.2fr">
+      <Table columns="0.6fr 1.5fr 1.3fr 1.5fr 0.7fr 1fr 0.4fr">
         <Table.Header>
           <div></div>
           <div>Book</div>
@@ -37,7 +37,6 @@ function BookTable() {
           <div>ISBN</div>
           <div>Rack</div>
           <div>Category</div>
-          <div>Description</div>
           <div></div>
         </Table.Header>
 
