@@ -3,26 +3,29 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
-import "react-datepicker/dist/react-datepicker.css";
 import Textarea from "../../ui/Textarea";
 import Button from "../../ui/Button";
 import { useEffect, useState } from "react";
-import { fetchCountries } from "../../services/apiMembers";
+import { fetchCountries, membershipTypes } from "../../services/apiMembers";
+import { useCreateMember } from "./useCreateMember";
+import toast from "react-hot-toast";
 
 function CreateMembershipForm({ onCloseModal }) {
   const [countries, setCountries] = useState([]);
+  const { createMember, isCreating } = useCreateMember();
   const [selectedCountry, setSelectedCountry] = useState({
     name: "",
     flag: "",
     id: "",
   });
+  const [selectedMembershipType, setSelectedMembershipType] = useState({
+    value: "",
+    label: "",
+    color: "",
+  });
 
   const { handleSubmit, reset, register, formState } = useForm();
   const { errors } = formState;
-
-  function onError(err) {
-    console.error(err);
-  }
 
   useEffect(() => {
     async function loadCountries() {
@@ -41,7 +44,7 @@ function CreateMembershipForm({ onCloseModal }) {
 
   function handleCountryChange(e) {
     const countryId = e.target.value;
-    const country = countries.find((c) => c.id === countryId);
+    const country = countries.find((c) => c.id == countryId);
 
     setSelectedCountry({
       id: countryId,
@@ -50,18 +53,61 @@ function CreateMembershipForm({ onCloseModal }) {
     });
   }
 
+  function handleTypeChange(e) {
+    const typeValue = e.target.value;
+    const type = membershipTypes.find((s) => s.value == typeValue);
+
+    setSelectedMembershipType({
+      value: typeValue,
+      label: type.label,
+      color: type.color,
+      price: type.price,
+    });
+  }
+
+  function onSubmit(data) {
+    if (!selectedCountry.id) {
+      toast.error("Country is not selected");
+      return;
+    }
+
+    if (!selectedMembershipType.value) {
+      toast.error("Type is not selected");
+      return;
+    }
+
+    const memberData = {
+      ...data,
+      nationality: selectedCountry.name,
+      countryFlag: selectedCountry.flag,
+      type: selectedMembershipType.value,
+      price: selectedMembershipType.price,
+    };
+    createMember(memberData, {
+      onSuccess: (data) => {
+        reset();
+        onCloseModal?.();
+      },
+    });
+  }
+
+  function onError(err) {
+    console.error(err);
+  }
+
   return (
     <Form
-      onSubmit={handleSubmit(onError)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="Name" error={errors?.name?.message}>
+      <FormRow label="Full Name" error={errors?.fullName?.message}>
         <Input
-          id="name"
+          id="fullName"
           type="text"
           defaultValue=""
           placeholder="John Doe"
-          {...register("name", { required: "This field is required" })}
+          disabled={isCreating}
+          {...register("fullName", { required: "This field is required" })}
         />
       </FormRow>
       <FormRow label="Email" error={errors?.email?.message}>
@@ -69,6 +115,7 @@ function CreateMembershipForm({ onCloseModal }) {
           id="email"
           type="text"
           defaultValue=""
+          disabled={isCreating}
           placeholder="johndoe@gmail.com"
           {...register("email", {
             required: "This field is required",
@@ -83,10 +130,11 @@ function CreateMembershipForm({ onCloseModal }) {
         <Select
           id="nationality"
           value={selectedCountry.id}
-          //   label={selectedCountry}
-          onChange={handleCountryChange}
+          key={selectedCountry.id}
+          onChange={(e) => handleCountryChange(e)}
+          disabled={isCreating}
           options={[
-            { value: "", label: "Select your country" },
+            { value: "", label: "Select country" },
             ...countries.map((country) => ({
               value: country.id,
               label: country.name,
@@ -98,28 +146,45 @@ function CreateMembershipForm({ onCloseModal }) {
         <Input
           id="nationalID"
           type="text"
+          disabled={isCreating}
           defaultValue=""
           placeholder="9547489053"
           {...register("nationalID", { required: "This field is required" })}
         />
       </FormRow>
-      {/* <FormRow label="Type" error={errors?.type?.message}>
-        <Select id="type" />
-      </FormRow> */}
-      <FormRow label="Start Date" error={errors?.startDate?.message}>
-        <Input
-          id="startDate"
-          type="date"
-          defaultValue=""
-          {...register("startDate", { required: "This field is required" })}
+      <FormRow label="Membership Type" error={errors?.type?.message}>
+        <Select
+          id="type"
+          disabled={isCreating}
+          value={selectedMembershipType.value}
+          key={selectedMembershipType.value}
+          onChange={(e) => handleTypeChange(e)}
+          options={[
+            { value: "", label: "Select type" },
+            ...membershipTypes.map((status) => ({
+              value: status.value,
+              label: status.label,
+              color: status.color,
+            })),
+          ]}
         />
       </FormRow>
-      <FormRow label="End Date" error={errors?.endDate?.message}>
+      <FormRow label="Issue Date" error={errors?.issueDate?.message}>
         <Input
-          id="endDate"
+          id="issueDate"
           type="date"
           defaultValue=""
-          {...register("endDate", { required: "This field is required" })}
+          disabled={isCreating}
+          {...register("issueDate", { required: "This field is required" })}
+        />
+      </FormRow>
+      <FormRow label="Expiry Date" error={errors?.expiryDate?.message}>
+        <Input
+          id="expiryDate"
+          type="date"
+          defaultValue=""
+          disabled={isCreating}
+          {...register("expiryDate", { required: "This field is required" })}
         />
       </FormRow>
       <FormRow label="Address" error={errors?.address?.message}>
@@ -127,6 +192,7 @@ function CreateMembershipForm({ onCloseModal }) {
           id="address"
           type="text"
           defaultValue=""
+          disabled={isCreating}
           placeholder="1B, Iganmu, Lagos State."
           {...register("address", { required: "This field is required" })}
         />
@@ -139,7 +205,7 @@ function CreateMembershipForm({ onCloseModal }) {
         >
           Cancel
         </Button>
-        <Button>Create Member</Button>
+        <Button disabled={isCreating}>Create Member</Button>
       </FormRow>
     </Form>
   );

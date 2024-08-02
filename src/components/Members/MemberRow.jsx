@@ -3,6 +3,9 @@ import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import { useCreateMember } from "./useCreateMember";
+import { format } from "date-fns";
+import Tag from "../../ui/Tag";
 
 const Member = styled.div`
   font-size: 1.2rem;
@@ -38,46 +41,58 @@ const Type = styled.div`
   font-family: "Sono";
 `;
 
-const Status = styled.div`
-  font-size: 1.2rem;
-  font-weight: 400;
-  color: 400;
-  font-family: "Sono";
-`;
+function MemberRow({ member }) {
+  const { createMember, isCreating } = useCreateMember();
 
-function MemberRow() {
+  const {
+    id: memberId,
+    fullName,
+    email,
+    nationality,
+    nationalID,
+    issueDate,
+    expiryDate,
+    type,
+    status,
+  } = member;
+
+  const statusToTagName = {
+    unconfirmed: "blue",
+    expired: "red",
+    active: "green",
+  };
+
   return (
     <Table.Row>
       <Member>
-        <span>John Doe</span>
-        <span>johndoe@gmail.com</span>
+        <span>{fullName}</span>
+        <span>{email}</span>
       </Member>
       <Member>
-        <span>Nigerian</span>
-        <span>888023267678</span>
+        <span>{nationality}</span>
+        <span>{nationalID}</span>
       </Member>
-      <Date>31/07/2024 - 31/12/2024</Date>
-      <Type>Premium</Type>
-      <Status>Active</Status>
+      <Date>
+        {format(issueDate, "MMM dd yyyy")} &mdash;{" "}
+        {format(expiryDate, "MMM dd yyyy")}
+      </Date>
+      <Type>{type}</Type>
+      <Tag type={statusToTagName[status]}>{status}</Tag>
       <div>
         <Modal>
           <Menus.Menu>
-            <Menus.Toggle />
+            <Menus.Toggle id={memberId} />
 
             <Menus.List>
               <Menus.Button icon={<HiSquare2Stack />}>Duplicate</Menus.Button>
-
               <Modal.Open>
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
-
               <Modal.Open>
                 <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
               </Modal.Open>
-
-              <Modal.Window></Modal.Window>
-
-              <Modal.Window></Modal.Window>
+              {/* <Modal.Window></Modal.Window>
+              <Modal.Window></Modal.Window> */}
             </Menus.List>
           </Menus.Menu>
         </Modal>

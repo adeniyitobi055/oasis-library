@@ -1,21 +1,15 @@
+import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
+import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import MemberRow from "./MemberRow";
+import { useMembers } from "./useMembers";
 
 function MemberTable() {
-  const members = [
-    {
-      name: "John Doe",
-      email: "johndoe@gmail.com",
-      address: "1B, Iganmu Lagos State",
-      nationality: "Nigerian",
-      nationalID: "888023267678",
-      startDate: "31/07/2024",
-      expiryDate: "31/12/2024",
-      type: "premium",
-      status: "active",
-    },
-  ];
+  const { isLoading, members } = useMembers();
+
+  if (isLoading) return <Spinner />;
+  if (!members.length) return <Empty resourceName="members" />;
 
   return (
     <Menus>
