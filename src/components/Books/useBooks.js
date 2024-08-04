@@ -3,7 +3,7 @@ import { getBooks } from "../../services/apiBooks";
 
 export function useBooks() {
   const {
-    isLoading,
+    isPending: isLoading,
     data: books,
     error,
   } = useQuery({

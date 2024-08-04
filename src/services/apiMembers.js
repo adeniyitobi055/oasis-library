@@ -2,9 +2,9 @@ import { isFuture, isPast, isToday } from "date-fns";
 import supabase from "./supabase";
 
 export const membershipTypes = [
-  { value: "regular", label: "Regular", color: "#ff0000", price: 100 },
-  { value: "classic", label: "Classic", color: "#0000ff", price: 250 },
-  { value: "premium", label: "Premium", color: "#00ff00", price: 400 },
+  { value: "regular", label: "Regular", price: 100 },
+  { value: "classic", label: "Classic", price: 250 },
+  { value: "premium", label: "Premium", price: 400 },
 ];
 
 export async function fetchCountries() {
@@ -91,8 +91,6 @@ export async function createUpdateMember(newMember, id) {
   }
 
   return data;
-
-  console.log("Data: ", data);
 }
 
 export async function deleteMember(id) {

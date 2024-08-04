@@ -29,3 +29,21 @@ export const formatCurrency = (value) => {
     value
   );
 };
+
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+export function dateDifference(issueDate, expiryDate) {
+  const dateIssue = new Date(issueDate);
+  const dateExpire = new Date(expiryDate);
+  const differenceInTime = dateExpire - dateIssue;
+  const differenceInDays = differenceInTime / (1000 * 3600 * 48);
+
+  return Math.ceil(differenceInDays);
+}

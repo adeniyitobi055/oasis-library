@@ -9,10 +9,19 @@ import { useEffect, useState } from "react";
 import { fetchCountries, membershipTypes } from "../../services/apiMembers";
 import { useCreateMember } from "./useCreateMember";
 import toast from "react-hot-toast";
+import { useUpdateMember } from "./useUpdateMember";
+import { formatDate } from "../../utils/helpers";
 
-function CreateMembershipForm({ onCloseModal }) {
+function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
   const [countries, setCountries] = useState([]);
   const { createMember, isCreating } = useCreateMember();
+  const { editMember, isEditing } = useUpdateMember();
+
+  const { id: editId, ...editValues } = memberToEdit;
+  const isEditSession = Boolean(editId);
+
+  const isWorking = isCreating || isEditing;
+
   const [selectedCountry, setSelectedCountry] = useState({
     name: "",
     flag: "",
@@ -21,10 +30,11 @@ function CreateMembershipForm({ onCloseModal }) {
   const [selectedMembershipType, setSelectedMembershipType] = useState({
     value: "",
     label: "",
-    color: "",
   });
 
-  const { handleSubmit, reset, register, formState } = useForm();
+  const { handleSubmit, reset, register, formState, setValue } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
   const { errors } = formState;
 
   useEffect(() => {
@@ -35,12 +45,45 @@ function CreateMembershipForm({ onCloseModal }) {
           a.name.localeCompare(b.name)
         );
         setCountries(sortedCountries);
+
+        if (isEditSession) {
+          const country = sortedCountries.find(
+            (c) => c.name === editValues.nationality
+          );
+          setSelectedCountry({
+            id: country?.id || "",
+            name: editValues.nationality || "",
+          });
+
+          setValue("nationality", editValues.nationality);
+        }
       } catch (error) {
         console.error(error);
       }
     }
     loadCountries();
-  }, []);
+  }, [editValues.nationality, isEditSession, setValue]);
+
+  useEffect(() => {
+    if (isEditSession) {
+      const type = membershipTypes.find((t) => t.value === editValues.type);
+      setSelectedMembershipType({
+        value: editValues.type || "",
+        label: type?.label | "",
+      });
+
+      setValue("type", editValues.type);
+
+      setValue("issueDate", formatDate(editValues.issueDate));
+      setValue("expiryDate", formatDate(editValues.expiryDate));
+    }
+  }, [
+    editValues.type,
+    isEditSession,
+    setValue,
+    editValues.issueDate,
+    editValues.expiryDate,
+  ]);
 
   function handleCountryChange(e) {
     const countryId = e.target.value;
@@ -60,7 +103,6 @@ function CreateMembershipForm({ onCloseModal }) {
     setSelectedMembershipType({
       value: typeValue,
       label: type.label,
-      color: type.color,
       price: type.price,
     });
   }
@@ -83,12 +125,25 @@ function CreateMembershipForm({ onCloseModal }) {
       type: selectedMembershipType.value,
       price: selectedMembershipType.price,
     };
-    createMember(memberData, {
-      onSuccess: (data) => {
-        reset();
-        onCloseModal?.();
-      },
-    });
+
+    if (isEditSession) {
+      editMember(
+        { newMemberData: { ...memberData }, id: editId },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    } else {
+      createMember(memberData, {
+        onSuccess: (data) => {
+          reset();
+          onCloseModal?.();
+        },
+      });
+    }
   }
 
   function onError(err) {
@@ -106,7 +161,7 @@ function CreateMembershipForm({ onCloseModal }) {
           type="text"
           defaultValue=""
           placeholder="John Doe"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("fullName", { required: "This field is required" })}
         />
       </FormRow>
@@ -115,7 +170,7 @@ function CreateMembershipForm({ onCloseModal }) {
           id="email"
           type="text"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           placeholder="johndoe@gmail.com"
           {...register("email", {
             required: "This field is required",
@@ -132,7 +187,7 @@ function CreateMembershipForm({ onCloseModal }) {
           value={selectedCountry.id}
           key={selectedCountry.id}
           onChange={(e) => handleCountryChange(e)}
-          disabled={isCreating}
+          disabled={isWorking}
           options={[
             { value: "", label: "Select country" },
             ...countries.map((country) => ({
@@ -146,7 +201,7 @@ function CreateMembershipForm({ onCloseModal }) {
         <Input
           id="nationalID"
           type="text"
-          disabled={isCreating}
+          disabled={isWorking}
           defaultValue=""
           placeholder="9547489053"
           {...register("nationalID", { required: "This field is required" })}
@@ -155,7 +210,7 @@ function CreateMembershipForm({ onCloseModal }) {
       <FormRow label="Membership Type" error={errors?.type?.message}>
         <Select
           id="type"
-          disabled={isCreating}
+          disabled={isWorking}
           value={selectedMembershipType.value}
           key={selectedMembershipType.value}
           onChange={(e) => handleTypeChange(e)}
@@ -173,8 +228,8 @@ function CreateMembershipForm({ onCloseModal }) {
         <Input
           id="issueDate"
           type="date"
-          defaultValue=""
-          disabled={isCreating}
+          defaultValue={editValues.issueDate || ""}
+          disabled={isWorking}
           {...register("issueDate", { required: "This field is required" })}
         />
       </FormRow>
@@ -182,8 +237,8 @@ function CreateMembershipForm({ onCloseModal }) {
         <Input
           id="expiryDate"
           type="date"
-          defaultValue=""
-          disabled={isCreating}
+          defaultValue={editValues.expiryDate || ""}
+          disabled={isWorking}
           {...register("expiryDate", { required: "This field is required" })}
         />
       </FormRow>
@@ -192,7 +247,7 @@ function CreateMembershipForm({ onCloseModal }) {
           id="address"
           type="text"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           placeholder="1B, Iganmu, Lagos State."
           {...register("address", { required: "This field is required" })}
         />
@@ -205,7 +260,7 @@ function CreateMembershipForm({ onCloseModal }) {
         >
           Cancel
         </Button>
-        <Button disabled={isCreating}>Create Member</Button>
+        <Button disabled={isWorking}>Create Member</Button>
       </FormRow>
     </Form>
   );

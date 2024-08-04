@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export function useCreateBook() {
   const queryClient = useQueryClient();
 
-  const { mutate: createBook, isLoading: isCreating } = useMutation({
+  const { mutate: createBook, isPending: isCreating } = useMutation({
     mutationFn: createUpdateBook,
     onSuccess: () => {
       toast.success("New book succesfully created");

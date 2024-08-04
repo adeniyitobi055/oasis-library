@@ -6,14 +6,14 @@ import MemberRow from "./MemberRow";
 import { useMembers } from "./useMembers";
 
 function MemberTable() {
-  const { isLoading, members } = useMembers();
+  const { isPending, members } = useMembers();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
   if (!members.length) return <Empty resourceName="members" />;
 
   return (
     <Menus>
-      <Table columns="1.6fr 1.2fr 1.5fr 1fr 1fr 0.5fr">
+      <Table columns="1.6fr 1.2fr 1.7fr 1fr 1fr 0.5fr">
         <Table.Header>
           <div>Member</div>
           <div>Nationality</div>

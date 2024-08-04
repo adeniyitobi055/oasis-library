@@ -19,46 +19,18 @@ const Img = styled.img`
 `;
 
 const Book = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
 `;
 
-const Author = styled.div`
-  font-size: 1.3rem;
-  font-weight: 400;
+const StyledCell = styled.div`
+  font-size: 1.4rem;
+  font-weight: 500;
   color: var(--color-grey-600);
   font-family: "Sono";
 `;
-
-const Isbn = styled.div`
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: var(--color-grey-600);
-  font-family: "Sono";
-`;
-
-const Rack = styled.div`
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: var(--color-grey-600);
-  font-family: "Sono";
-`;
-
-const Category = styled.div`
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: var(--color-grey-600);
-  font-family: "Sono";
-`;
-
-/* const Description = styled.div`
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: var(--color-grey-600);
-  font-family: "Sono";
-`; */
 
 function BookRow({ book }) {
   const { isCreating, createBook } = useCreateBook();
@@ -92,10 +64,10 @@ function BookRow({ book }) {
     <Table.Row>
       <Img src={image} />
       <Book>{name}</Book>
-      <Author>{author}</Author>
-      <Isbn>{isbn}</Isbn>
-      <Rack>{rackNum}</Rack>
-      <Category>{category}</Category>
+      <StyledCell>{author}</StyledCell>
+      <StyledCell>{isbn}</StyledCell>
+      <StyledCell>{rackNum}</StyledCell>
+      <StyledCell>{category}</StyledCell>
       <div>
         <Modal>
           <Menus.Menu>

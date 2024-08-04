@@ -6,7 +6,7 @@ import Button from "../../ui/Button";
 import { useSignup } from "./useSignup";
 
 function SignUpForm() {
-  const { signup, isLoading } = useSignup();
+  const { signup, isSigningUp } = useSignup();
   const { register, formState, handleSubmit, getValues, reset } = useForm();
   const { errors } = formState;
 
@@ -20,7 +20,7 @@ function SignUpForm() {
         <Input
           type="text"
           id="fullName"
-          disabled={isLoading}
+          disabled={isSigningUp}
           {...register("fullName", { required: "This field is required" })}
         />
       </FormRow>
@@ -28,7 +28,7 @@ function SignUpForm() {
         <Input
           type="text"
           id="email"
-          disabled={isLoading}
+          disabled={isSigningUp}
           {...register("email", {
             required: "This field is required",
             pattern: {
@@ -45,7 +45,7 @@ function SignUpForm() {
         <Input
           type="password"
           id="password"
-          disabled={isLoading}
+          disabled={isSigningUp}
           {...register("password", {
             required: "This field is required",
             minLength: {
@@ -62,7 +62,7 @@ function SignUpForm() {
         <Input
           type="password"
           id="confirmPassword"
-          disabled={isLoading}
+          disabled={isSigningUp}
           {...register("confirmPassword", {
             required: "This field is required",
             validate: (value) =>
@@ -72,14 +72,14 @@ function SignUpForm() {
       </FormRow>
       <FormRow>
         <Button
-          disabled={isLoading}
+          disabled={isSigningUp}
           type="reset"
           variation="secondary"
           onClick={reset}
         >
           Cancel
         </Button>
-        <Button disabled={isLoading}>Create New User</Button>
+        <Button disabled={isSigningUp}>Create New User</Button>
       </FormRow>
     </Form>
   );

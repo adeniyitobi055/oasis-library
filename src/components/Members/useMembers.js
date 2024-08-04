@@ -3,10 +3,10 @@ import { getMembers } from "../../services/apiMembers";
 
 export function useMembers() {
   const {
-    isLoading,
+    isPending,
     data: members,
     error,
   } = useQuery({ queryKey: ["members"], queryFn: getMembers });
 
-  return { isLoading, members, error };
+  return { isPending, members, error };
 }
