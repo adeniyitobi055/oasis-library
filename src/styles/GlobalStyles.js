@@ -33,9 +33,19 @@ const GlobalStyles = createGlobalStyle`
     --color-red-700: #b91c1c;
     --color-red-800: #991b1b;
 
-    --color-bronze-100: #CD7F32;
-    --color-silver-100: #C0C0C0;
-    --color-gold-100: #504107;
+    --color-bronze-100:#ce8946;
+    --color-bronze-800: #CD7F32;
+    --color-bronze-700:#574327;
+
+    --color-silver-100: #6D6F6E;
+    --color-silver-700:#2B2C2C;
+    --color-silver-900:#474747;
+
+    --color-gold-100:#CDB450;
+    --color-gold-700: #504107;
+    --color-gold-800:#282003;
+
+    
     
     --backdrop-color: rgba(255, 255, 255, 0.1);
     
@@ -83,6 +93,18 @@ const GlobalStyles = createGlobalStyle`
 
     --image-grayscale: 10%;
     --image-opacity: 90%;
+
+    --color-bronze-100:#ce8946;
+    --color-bronze-700:#4A3004;
+    --color-bronze-800: #CD7F32;
+
+    --color-silver-100: #6D6F6E;
+    --color-silver-700:#2B2C2C;
+    --color-silver-900:#474747;
+
+    --color-gold-100:#CDB450;
+    --color-gold-700: #504107;
+    --color-gold-900:#282003;
   }
 
   /* Indigo */

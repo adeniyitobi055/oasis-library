@@ -260,7 +260,9 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
         >
           Cancel
         </Button>
-        <Button disabled={isWorking}>Create Member</Button>
+        <Button disabled={isWorking}>
+          {isEditSession ? "Edit member" : "Create new member"}
+        </Button>
       </FormRow>
     </Form>
   );
