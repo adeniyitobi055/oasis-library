@@ -57,7 +57,7 @@ function UpdateUserDataForm() {
         />
       </FormRow>
 
-      <FormRow>
+      <FormRow label="Avatar image">
         <FileInput
           id="avatar"
           accept="image/*"

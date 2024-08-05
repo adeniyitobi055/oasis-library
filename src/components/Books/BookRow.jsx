@@ -10,8 +10,8 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const Img = styled.img`
   display: block;
-  width: 6.5rem;
-  /* height: 4rem; */
+  width: 10rem;
+  /* height: 5rem; */
   aspect-ratio: 3 / 2;
   object-position: center;
   object-fit: contain;
@@ -19,15 +19,15 @@ const Img = styled.img`
 `;
 
 const Book = styled.div`
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
 `;
 
 const StyledCell = styled.div`
-  font-size: 1.4rem;
-  font-weight: 500;
+  font-size: 1.3rem;
+  font-weight: 400;
   color: var(--color-grey-600);
   font-family: "Sono";
 `;

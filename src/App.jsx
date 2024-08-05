@@ -15,6 +15,7 @@ import Users from "./pages/Users";
 import Issues from "./pages/Issues";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import Members from "./pages/Members";
+import Account from "./pages/Account";
 
 function App() {
   const queryClient = new QueryClient({
@@ -43,6 +44,7 @@ function App() {
               <Route path="issues" element={<Issues />} />
               <Route path="users" element={<Users />} />
               <Route path="members" element={<Members />} />
+              <Route path="account" element={<Account />} />
             </Route>
             <Route path="login" element={<Login />} />
             <Route path="*" element={<PageNotFound />} />

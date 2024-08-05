@@ -37,8 +37,8 @@ const GlobalStyles = createGlobalStyle`
     --color-bronze-800: #CD7F32;
     --color-bronze-700:#574327;
 
-    --color-silver-100: #6D6F6E;
-    --color-silver-700:#2B2C2C;
+    --color-silver-100: #AE9364;
+    --color-silver-700:#493003;
     --color-silver-900:#474747;
 
     --color-gold-100:#CDB450;
@@ -98,8 +98,8 @@ const GlobalStyles = createGlobalStyle`
     --color-bronze-700:#4A3004;
     --color-bronze-800: #CD7F32;
 
-    --color-silver-100: #6D6F6E;
-    --color-silver-700:#2B2C2C;
+    --color-silver-100: #AE9364;
+    --color-silver-700:#493003;
     --color-silver-900:#474747;
 
     --color-gold-100:#CDB450;
