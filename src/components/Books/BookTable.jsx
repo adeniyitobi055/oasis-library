@@ -6,7 +6,6 @@ import Table from "../../ui/Table";
 import BookRow from "./BookRow";
 import { useBooks } from "./useBooks";
 import { useEffect, useState } from "react";
-import BookTableOperations from "./BookTableOperations";
 
 function BookTable({ searchQuery }) {
   const { isLoading, books = [] } = useBooks();
@@ -19,7 +18,10 @@ function BookTable({ searchQuery }) {
       const filteredBook = books.filter(
         (book) =>
           book.name.toLowerCase().includes(searchQuery) ||
-          book.author.toLowerCase().includes(searchQuery)
+          book.author.toLowerCase().includes(searchQuery) ||
+          book.category.toLowerCase().includes(searchQuery) ||
+          book.isbn.toLowerCase().includes(searchQuery) ||
+          book.rackNum.toLowerCase().includes(searchQuery)
       );
       setFilteredBooks(filteredBook);
     },

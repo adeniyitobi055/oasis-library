@@ -38,7 +38,7 @@ export async function createUpdateMember(newMember, id) {
     isPast(new Date(newMember.expiryDate)) &&
     !isToday(new Date(newMember.expiryDate))
   )
-    status = "expired";
+    status = "in-active";
   if (
     isFuture(new Date(newMember.issueDate)) ||
     isToday(new Date(newMember.issueDate))

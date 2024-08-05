@@ -40,7 +40,7 @@ function MemberRow({ member }) {
 
   const statusToTagName = {
     unconfirmed: "blue",
-    expired: "red",
+    "in-active": "red",
     active: "green",
   };
 
@@ -76,7 +76,7 @@ function MemberRow({ member }) {
         </span>
       </StyledCell>
       <Tag type={typeToTagName[type]}>{type}</Tag>
-      <Tag type={statusToTagName[status]}>{status}</Tag>
+      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
       <div>
         <Modal>
           <Menus.Menu>
