@@ -3,7 +3,7 @@ import { getBooks } from "../../services/apiBooks";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 
-export function useBooks() {
+export function useBooks({ searchQuery }) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -20,8 +20,8 @@ export function useBooks() {
     data: { data: books, count } = {},
     error,
   } = useQuery({
-    queryKey: ["books", sortBy, page],
-    queryFn: () => getBooks({ sortBy, page }),
+    queryKey: ["books", sortBy, page, searchQuery],
+    queryFn: () => getBooks({ sortBy, page, searchQuery }),
   });
 
   // PRE-FETCHING
@@ -29,14 +29,14 @@ export function useBooks() {
 
   if (page < pageCount)
     queryClient.prefetchQuery({
-      queryKey: ["books", sortBy, page + 1],
-      queryFn: () => getBooks({ sortBy, page: page + 1 }),
+      queryKey: ["books", sortBy, page + 1, searchQuery],
+      queryFn: () => getBooks({ sortBy, page: page + 1, searchQuery }),
     });
 
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: ["books", sortBy, page - 1],
-      queryFn: () => getBooks({ sortBy, page: page - 1 }),
+      queryKey: ["books", sortBy, page - 1, searchQuery],
+      queryFn: () => getBooks({ sortBy, page: page - 1, searchQuery }),
     });
 
   return { isLoading, error, books, count };

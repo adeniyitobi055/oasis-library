@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "../utils/constants";
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getBooks({ sortBy, page }) {
+export async function getBooks({ sortBy, page, searchQuery }) {
   let query = supabase.from("books").select("*", { count: "exact" });
 
   // SORT
@@ -15,6 +15,13 @@ export async function getBooks({ sortBy, page }) {
     const to = from + PAGE_SIZE - 1;
 
     query = query.range(from, to);
+  }
+
+  // SEARCH
+  if (searchQuery) {
+    query = query.or(
+      `name.ilike.%${searchQuery}%,author.ilike.%${searchQuery}%,rackNum.ilike.%${searchQuery}%,isbn.ilike.%${searchQuery}%,category.ilike.%${searchQuery}%`
+    );
   }
 
   const { data, error, count } = await query;
