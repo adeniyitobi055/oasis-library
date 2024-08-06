@@ -10,7 +10,7 @@ export async function getBooks({ sortBy, page, searchQuery }) {
       ascending: sortBy.direction === "asc",
     });
 
-  if (page) {
+  if (page !== null) {
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
 

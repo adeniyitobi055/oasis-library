@@ -3,7 +3,7 @@ import { getBooks } from "../../services/apiBooks";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 
-export function useBooks({ searchQuery }) {
+export function useBooks({ searchQuery, fetchAll = false }) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -16,12 +16,13 @@ export function useBooks({ searchQuery }) {
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
   const {
-    isPending: isLoading,
+    isPending,
     data: { data: books, count } = {},
     error,
   } = useQuery({
-    queryKey: ["books", sortBy, page, searchQuery],
-    queryFn: () => getBooks({ sortBy, page, searchQuery }),
+    queryKey: ["books", sortBy, fetchAll ? null : page, searchQuery],
+    queryFn: () =>
+      getBooks({ sortBy, page: fetchAll ? null : page, searchQuery }),
   });
 
   // PRE-FETCHING
@@ -39,5 +40,5 @@ export function useBooks({ searchQuery }) {
       queryFn: () => getBooks({ sortBy, page: page - 1, searchQuery }),
     });
 
-  return { isLoading, error, books, count };
+  return { isPending, error, books, count };
 }

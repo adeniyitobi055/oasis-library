@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../../ui/Pagination";
 
 function BookTable({ searchQuery }) {
-  const { isLoading, books = [], count } = useBooks({ searchQuery });
+  const { isPending, books = [], count } = useBooks({ searchQuery });
 
   const [filteredBooks, setFilteredBooks] = useState([]);
 
@@ -27,7 +27,7 @@ function BookTable({ searchQuery }) {
     [books, searchQuery]
   );
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
   if (!books.length) return <Empty resourceName="books" />;
 
   return (
