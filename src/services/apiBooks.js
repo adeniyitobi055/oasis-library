@@ -1,14 +1,30 @@
+import { PAGE_SIZE } from "../utils/constants";
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getBooks() {
-  const { data, error } = await supabase.from("books").select("*");
+export async function getBooks({ sortBy, page }) {
+  let query = supabase.from("books").select("*", { count: "exact" });
+
+  // SORT
+  if (sortBy)
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === "asc",
+    });
+
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Books could not be loaded");
   }
 
-  return data;
+  return { data, count };
 }
 
 export async function createUpdateBook(newBook, id) {

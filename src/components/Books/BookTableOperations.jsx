@@ -15,7 +15,7 @@ function BookTableOperations({ onSearch }) {
           boxShadow: `var(--shadow-sm)`,
           width: `20em`,
         }}
-        placeholder="Search by book or author"
+        placeholder="Search"
         onChange={(e) => onSearch(e.target.value)}
       />
       <SortBy

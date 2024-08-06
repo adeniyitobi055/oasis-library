@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router-dom";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
@@ -6,10 +5,10 @@ import Table from "../../ui/Table";
 import BookRow from "./BookRow";
 import { useBooks } from "./useBooks";
 import { useEffect, useState } from "react";
+import Pagination from "../../ui/Pagination";
 
 function BookTable({ searchQuery }) {
-  const { isLoading, books = [] } = useBooks();
-  const [searchParams] = useSearchParams();
+  const { isLoading, books = [], count } = useBooks();
 
   const [filteredBooks, setFilteredBooks] = useState([]);
 
@@ -31,21 +30,6 @@ function BookTable({ searchQuery }) {
   if (isLoading) return <Spinner />;
   if (!books.length) return <Empty resourceName="books" />;
 
-  // 1) SORT
-  const sortBy = searchParams.get("sortBy") || "name-asc";
-  const [field, direction] = sortBy.split("-");
-  const modifier = direction === "asc" ? 1 : -1;
-
-  // const sortedBooks = books.sort((a, b) => (a[field] - b[field]) * modifier);
-  const sortedBooks = [...filteredBooks].sort((a, b) => {
-    const fieldA = a[field].toLowerCase();
-    const fieldB = b[field].toLowerCase();
-
-    if (fieldA < fieldB) return -1 * modifier;
-    if (fieldA > fieldB) return 1 * modifier;
-    return 0;
-  });
-
   return (
     <Menus>
       <Table columns="0.5fr 1.8fr 1.3fr 1.5fr 0.7fr 1.2fr 0.4fr">
@@ -60,10 +44,14 @@ function BookTable({ searchQuery }) {
         </Table.Header>
 
         <Table.Body
-          data={sortedBooks}
+          data={filteredBooks}
           render={(book) => <BookRow book={book} key={book.id} />}
         />
       </Table>
+
+      <Table.Footer>
+        <Pagination count={count} />
+      </Table.Footer>
     </Menus>
   );
 }
