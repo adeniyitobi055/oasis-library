@@ -3,9 +3,9 @@ import supabase from "./supabase";
 import { PAGE_SIZE } from "../utils/constants";
 
 export const membershipTypes = [
-  { value: "regular", label: "Regular", price: 100 },
-  { value: "classic", label: "Classic", price: 250 },
-  { value: "premium", label: "Premium", price: 400 },
+  { value: "regular", label: "Regular", price: 100, maxDuration: 30 },
+  { value: "classic", label: "Classic", price: 250, maxDuration: 40 },
+  { value: "premium", label: "Premium", price: 400, maxDuration: 60 },
 ];
 
 export async function fetchCountries() {
@@ -22,7 +22,7 @@ export async function fetchCountries() {
   }));
 }
 
-export async function getMembers({ filter, sortBy, page }) {
+export async function getMembers({ filter, sortBy, page } = {}) {
   let query = supabase.from("members").select("*", { count: "exact" });
 
   // FILTER
@@ -83,6 +83,7 @@ export async function createUpdateMember(newMember, id) {
         countryFlag: newMember.countryFlag,
         type: newMember.type,
         price: newMember.price,
+        maxDuration: newMember.maxDuration,
         status: status,
       },
     ]);
@@ -97,6 +98,7 @@ export async function createUpdateMember(newMember, id) {
           countryFlag: newMember.countryFlag,
           type: newMember.type,
           price: newMember.price,
+          maxDuration: newMember.maxDuration,
           status: status,
         },
       ])
@@ -107,6 +109,21 @@ export async function createUpdateMember(newMember, id) {
   if (error) {
     console.error(error);
     throw new Error("Member could not be created");
+  }
+
+  return data;
+}
+
+export async function getMember(id) {
+  const { data, error } = await supabase
+    .from("members")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Member not found");
   }
 
   return data;

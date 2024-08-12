@@ -30,6 +30,8 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
   const [selectedMembershipType, setSelectedMembershipType] = useState({
     value: "",
     label: "",
+    price: "",
+    maxDuration: 0,
   });
 
   const { handleSubmit, reset, register, formState, setValue } = useForm({
@@ -104,6 +106,7 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
       value: typeValue,
       label: type.label,
       price: type.price,
+      maxDuration: type.maxDuration,
     });
   }
 
@@ -124,6 +127,7 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
       countryFlag: selectedCountry.flag,
       type: selectedMembershipType.value,
       price: selectedMembershipType.price,
+      maxDuration: selectedMembershipType.maxDuration,
     };
 
     if (isEditSession) {
@@ -261,7 +265,7 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
           Cancel
         </Button>
         <Button disabled={isWorking}>
-          {isEditSession ? "Edit member" : "Create new member"}
+          {isEditSession ? "Edit member" : "Create member"}
         </Button>
       </FormRow>
     </Form>

@@ -1,5 +1,7 @@
+import IssueDetails from "../components/Issues/IssueDetails";
+
 function Issue() {
-  return <div></div>;
+  return <IssueDetails />;
 }
 
 export default Issue;

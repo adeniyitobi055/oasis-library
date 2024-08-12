@@ -1,4 +1,5 @@
 import AddIssue from "../components/Issues/AddIssue";
+import IssueTable from "../components/Issues/IssueTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
@@ -10,6 +11,7 @@ function Issues() {
       </Row>
 
       <Row>
+        <IssueTable />
         <AddIssue />
       </Row>
     </>

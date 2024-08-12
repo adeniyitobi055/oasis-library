@@ -143,7 +143,7 @@ function CreateBookForm({ bookToEdit = {}, onCloseModal }) {
           Cancel
         </Button>
         <Button disabled={isWorking}>
-          {isEditSession ? "Edit book" : "Add new book"}
+          {isEditSession ? "Edit book" : "Add book"}
         </Button>
       </FormRow>
     </Form>

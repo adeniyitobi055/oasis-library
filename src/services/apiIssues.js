@@ -1,9 +1,33 @@
 import supabase from "./supabase";
 
-export async function createUpdateIssue(newIssue, id) {}
+export async function createIssue(newIssue) {
+  let status = "pending";
+  let query = supabase.from("issues");
+
+  query = query.insert([
+    {
+      ...newIssue,
+      status: status,
+      memberId: newIssue.memberId,
+      bookId: newIssue.bookId,
+      book: newIssue.book,
+    },
+  ]);
+
+  const { data, error } = await query.select().single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Issue could not be created");
+  }
+
+  return data;
+}
 
 export async function getIssues() {
-  let query = supabase.from("issues").select("*");
+  let query = supabase
+    .from("issues")
+    .select("*, books(name), members(fullName, email)", { count: "exact" });
 
   const { data, error } = await query;
 

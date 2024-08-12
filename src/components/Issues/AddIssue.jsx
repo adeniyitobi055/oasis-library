@@ -7,7 +7,7 @@ function AddIssue() {
     <div>
       <Modal>
         <Modal.Open opens="issue-form">
-          <Button> "Add new issue</Button>
+          <Button>Add new issue</Button>
         </Modal.Open>
         <Modal.Window name="issue-form">
           <CreateIssueForm />

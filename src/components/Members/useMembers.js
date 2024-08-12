@@ -3,7 +3,7 @@ import { getMembers } from "../../services/apiMembers";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 
-export function useMembers({ fetchAll = false }) {
+export function useMembers({ fetchAll = false } = {}) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
