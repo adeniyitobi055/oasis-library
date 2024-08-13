@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from "../utils/constants";
 import supabase from "./supabase";
 
 export async function createIssue(newIssue) {
@@ -10,7 +11,6 @@ export async function createIssue(newIssue) {
       status: status,
       memberId: newIssue.memberId,
       bookId: newIssue.bookId,
-      book: newIssue.book,
     },
   ]);
 
@@ -24,19 +24,35 @@ export async function createIssue(newIssue) {
   return data;
 }
 
-export async function getIssues() {
+export async function getIssues({ filter, sortBy, page } = {}) {
   let query = supabase
     .from("issues")
     .select("*, books(name), members(fullName, email)", { count: "exact" });
 
-  const { data, error } = await query;
+  // FILTER
+  if (filter) query = query[filter.method || "eq"](filter.field, filter.value);
+
+  // SORT
+  if (sortBy)
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === "asc",
+    });
+
+  if (page !== null) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Issues could not be loaded");
   }
 
-  return data;
+  return { data, count };
 }
 
 export async function getIssue(id) {

@@ -5,7 +5,7 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import {
   HiArrowDownOnSquare,
-  HiDocumentCheck,
+  HiArrowUpOnSquare,
   HiEye,
   HiTrash,
 } from "react-icons/hi2";
@@ -31,12 +31,9 @@ const StyledCell = styled.div`
 function IssueRow({ issue }) {
   const {
     id: issueId,
-    created_at,
     borrowDate,
     returnDate,
     status,
-    memberId,
-    bookId,
     members: { fullName, email },
     books: { name },
   } = issue;
@@ -44,9 +41,9 @@ function IssueRow({ issue }) {
   const navigate = useNavigate();
 
   const statusToTagName = {
-    pending: "red",
-    approved: "silver",
-    returned: "green",
+    pending: "blue",
+    "checked-in": "green",
+    "checked-out": "silver",
   };
 
   return (
@@ -69,7 +66,7 @@ function IssueRow({ issue }) {
           {format(returnDate, "MMM dd yyyy")}
         </span>
       </StyledCell>
-      <Tag type={statusToTagName[status]}>{status}</Tag>
+      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
       <div>
         <Modal>
           <Menus.Menu>
@@ -82,9 +79,23 @@ function IssueRow({ issue }) {
                 See details
               </Menus.Button>
 
-              <Modal.Open opens="confirm">
-                <Menus.Button icon={<HiDocumentCheck />}>Approve</Menus.Button>
-              </Modal.Open>
+              {status === "checked-out" && (
+                <Menus.Button
+                  icon={<HiArrowDownOnSquare />}
+                  onClick={() => navigate(`/checkin/${issueId}`)}
+                >
+                  Check in
+                </Menus.Button>
+              )}
+
+              {status === "pending" && (
+                <Menus.Button
+                  icon={<HiArrowUpOnSquare />}
+                  onClick={() => navigate(`/checkout/${issueId}`)}
+                >
+                  Check out
+                </Menus.Button>
+              )}
 
               <Modal.Open opens="delete">
                 <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>

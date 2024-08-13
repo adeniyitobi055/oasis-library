@@ -87,7 +87,6 @@ function CreateIssueForm({ onCloseModal }) {
       ...data,
       memberId: selectedMember,
       bookId: selectedBook,
-      book: books.find((book) => book.id === Number(selectedBook)).name,
     };
 
     createIssue(issueData, {
@@ -117,10 +116,13 @@ function CreateIssueForm({ onCloseModal }) {
           onChange={(e) => handleMemberChange(e)}
           options={[
             { value: "", label: "Select member" },
-            ...members.map((member) => ({
-              label: member.fullName,
-              value: member.id,
-            })),
+            ...members
+              .slice()
+              .sort((a, b) => a.fullName.localeCompare(b.fullName))
+              .map((member) => ({
+                label: member.fullName,
+                value: member.id,
+              })),
           ]}
         />
       </FormRow>

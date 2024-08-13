@@ -3,9 +3,9 @@ import supabase from "./supabase";
 import { PAGE_SIZE } from "../utils/constants";
 
 export const membershipTypes = [
-  { value: "regular", label: "Regular", price: 100, maxDuration: 30 },
-  { value: "classic", label: "Classic", price: 250, maxDuration: 40 },
-  { value: "premium", label: "Premium", price: 400, maxDuration: 60 },
+  { value: "regular", label: "Regular", price: 100, maxDuration: 10 },
+  { value: "classic", label: "Classic", price: 250, maxDuration: 20 },
+  { value: "premium", label: "Premium", price: 400, maxDuration: 30 },
 ];
 
 export async function fetchCountries() {
@@ -100,6 +100,7 @@ export async function createUpdateMember(newMember, id) {
           price: newMember.price,
           maxDuration: newMember.maxDuration,
           status: status,
+          expiryDate: newMember.expiryDate,
         },
       ])
       .eq("id", id);

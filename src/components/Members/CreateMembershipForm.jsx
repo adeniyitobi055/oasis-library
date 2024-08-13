@@ -34,10 +34,17 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
     maxDuration: 0,
   });
 
-  const { handleSubmit, reset, register, formState, setValue } = useForm({
-    defaultValues: isEditSession ? editValues : {},
-  });
+  const { handleSubmit, reset, register, formState, setValue, watch } = useForm(
+    {
+      defaultValues: isEditSession ? editValues : {},
+    }
+  );
   const { errors } = formState;
+
+  const issueDate = watch("issueDate");
+
+  const expiryDate = new Date(issueDate);
+  expiryDate.setDate(expiryDate.getDate() + 30);
 
   useEffect(() => {
     async function loadCountries() {
@@ -77,7 +84,7 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
       setValue("type", editValues.type);
 
       setValue("issueDate", formatDate(editValues.issueDate));
-      setValue("expiryDate", formatDate(editValues.expiryDate));
+      // setValue("expiryDate", formatDate(editValues.expiryDate));
     }
   }, [
     editValues.type,
@@ -128,6 +135,7 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
       type: selectedMembershipType.value,
       price: selectedMembershipType.price,
       maxDuration: selectedMembershipType.maxDuration,
+      expiryDate: expiryDate,
     };
 
     if (isEditSession) {
@@ -241,9 +249,8 @@ function CreateMembershipForm({ memberToEdit = {}, onCloseModal }) {
         <Input
           id="expiryDate"
           type="date"
-          defaultValue={editValues.expiryDate || ""}
-          disabled={isWorking}
-          {...register("expiryDate", { required: "This field is required" })}
+          readOnly
+          value={formatDate(expiryDate)}
         />
       </FormRow>
       <FormRow label="Address" error={errors?.address?.message}>

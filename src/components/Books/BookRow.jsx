@@ -27,9 +27,10 @@ const Book = styled.div`
 
 const StyledCell = styled.div`
   font-size: 1.3rem;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--color-grey-600);
   font-family: "Sono";
+  letter-spacing: 0.5px;
 `;
 
 function BookRow({ book }) {

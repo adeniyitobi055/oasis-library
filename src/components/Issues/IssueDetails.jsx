@@ -35,8 +35,8 @@ function IssueDetails() {
 
   const statusToTagName = {
     pending: "red",
-    approved: "silver",
-    returned: "green",
+    "checked-in": "green",
+    "checked-out": "silver",
   };
 
   return (
@@ -44,7 +44,7 @@ function IssueDetails() {
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Issue #{issueId}</Heading>
-          <Tag type={statusToTagName[status]}>{status}</Tag>
+          <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
@@ -52,7 +52,11 @@ function IssueDetails() {
       <IssueDataBox issue={issue} />
 
       <ButtonGroup>
-        {status === "pending" && <Button>Approve</Button>}
+        {status === "pending" && (
+          <Button onClick={() => navigate(`/checkout/${issueId}`)}>
+            Check out
+          </Button>
+        )}
 
         <Modal>
           <Modal.Open opens="delete">
