@@ -1,4 +1,4 @@
-import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import { HiEye, HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
@@ -7,6 +7,7 @@ import { useCreateBook } from "./useCreateBook";
 import { useDeleteBook } from "./useDeleteBook";
 import CreateBookForm from "./CreateBookForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useNavigate } from "react-router-dom";
 
 const Img = styled.img`
   display: block;
@@ -35,6 +36,7 @@ const StyledCell = styled.div`
 
 function BookRow({ book }) {
   const { isCreating, createBook } = useCreateBook();
+  const navigate = useNavigate();
 
   const {
     id: bookId,
@@ -75,6 +77,13 @@ function BookRow({ book }) {
             <Menus.Toggle id={bookId} />
 
             <Menus.List id={bookId}>
+              <Menus.Button
+                icon={<HiEye />}
+                onClick={() => navigate(`/books/${bookId}`)}
+              >
+                See details
+              </Menus.Button>
+
               <Menus.Button
                 icon={<HiSquare2Stack />}
                 onClick={handleDuplicate}

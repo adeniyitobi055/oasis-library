@@ -1,8 +1,28 @@
+import { isFuture, isPast, isToday } from "date-fns";
 import { PAGE_SIZE } from "../utils/constants";
 import supabase from "./supabase";
 
 export async function createIssue(newIssue) {
   let status = "pending";
+
+  if (
+    isPast(new Date(newIssue.returnDate)) &&
+    !isToday(new Date(newIssue.returnDate))
+  )
+    status = "checked-in";
+  if (
+    isFuture(new Date(newIssue.borrowDate)) ||
+    isToday(new Date(newIssue.borrowDate))
+  )
+    status = "pending";
+  if (
+    (isFuture(new Date(newIssue.returnDate)) ||
+      isToday(new Date(newIssue.returnDate))) &&
+    isPast(new Date(newIssue.borrowDate)) &&
+    !isToday(new Date(newIssue.borrowDate))
+  )
+    status = "checked-out";
+
   let query = supabase.from("issues");
 
   query = query.insert([

@@ -19,6 +19,7 @@ import Account from "./pages/Account";
 import Issue from "./pages/Issue";
 import Checkin from "./pages/Checkin";
 import Checkout from "./pages/Checkout";
+import Book from "./pages/Book";
 
 function App() {
   const queryClient = new QueryClient({
@@ -44,6 +45,7 @@ function App() {
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="books" element={<Books />} />
+              <Route path="books/:bookId" element={<Book />} />
               <Route path="issues" element={<Issues />} />
               <Route path="issues/:issueId" element={<Issue />} />
               <Route path="checkin/:issueId" element={<Checkin />} />

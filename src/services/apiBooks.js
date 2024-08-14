@@ -80,6 +80,21 @@ export async function createUpdateBook(newBook, id) {
   return data;
 }
 
+export async function getBook(id) {
+  const { data, error } = await supabase
+    .from("books")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Book could not be found");
+  }
+
+  return data;
+}
+
 export async function deleteBook(id) {
   const { data, error } = await supabase.from("books").delete().eq("id", id);
 

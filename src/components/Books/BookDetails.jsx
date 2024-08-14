@@ -1,20 +1,21 @@
 import styled from "styled-components";
-import { useDeleteIssue } from "./useDeleteIssue";
-import { useIssue } from "./useIssue";
+import { useDeleteBook } from "./useDeleteBook";
+import { useUpdateBook } from "./useUpdateBook";
+import { useBook } from "./useBook";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
-import Tag from "../../ui/Tag";
 import ButtonText from "../../ui/ButtonText";
-import IssueDataBox from "./IssueDataBox";
+import BookDataBox from "./BookDataBox";
 import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
+import Button from "../../ui/Button";
 import { HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import CreateBookForm from "./CreateBookForm";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -22,52 +23,48 @@ const HeadingGroup = styled.div`
   align-items: center;
 `;
 
-function IssueDetails() {
-  const { isDeleting, deleteIssue } = useDeleteIssue();
-  const { isPending, issue } = useIssue();
+function BookDetails() {
+  const { deleteBook, isDeleting } = useDeleteBook();
+  const { editBook, isEditing } = useUpdateBook();
+  const { isPending, book } = useBook();
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 
   if (isPending) return <Spinner />;
-  if (!issue) return <Empty resourceName="issue" />;
+  if (!book) return <Empty resourceName="book" />;
 
-  const { status, id: issueId } = issue;
-
-  const statusToTagName = {
-    pending: "red",
-    "checked-in": "green",
-    "checked-out": "silver",
-  };
+  const { id: bookId, name } = book;
 
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Issue #{issueId}</Heading>
-          <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+          <Heading as="h1">{name}</Heading>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <IssueDataBox issue={issue} />
+      <BookDataBox book={book} />
 
       <ButtonGroup>
-        {status === "pending" && (
-          <Button onClick={() => navigate(`/checkout/${issueId}`)}>
-            Check out
-          </Button>
-        )}
-
         <Modal>
-          <Modal.Open opens="delete">
-            <Button variation="danger">Delete issue</Button>
+          <Modal.Open opens="edit">
+            <Button>Edit Book</Button>
           </Modal.Open>
+
+          <Modal.Open opens="delete">
+            <Button variation="danger">Delete Book</Button>
+          </Modal.Open>
+
+          <Modal.Window name="edit">
+            <CreateBookForm bookToEdit={book} />
+          </Modal.Window>
 
           <Modal.Window name="delete">
             <ConfirmDelete
-              resourceName="issue"
+              resourceName="book"
               onConfirm={() =>
-                deleteIssue(issueId, { onSettled: () => navigate(-1) })
+                deleteBook(bookId, { onSettled: () => navigate(-1) })
               }
               disabled={isDeleting}
             />
@@ -82,4 +79,4 @@ function IssueDetails() {
   );
 }
 
-export default IssueDetails;
+export default BookDetails;
