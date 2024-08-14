@@ -1,13 +1,13 @@
 import {
-  HiMiniInboxStack,
+  HiMiniPencil,
   HiOutlineBookOpen,
   HiOutlineChatBubbleBottomCenterText,
+  HiTableCells,
   HiViewColumns,
 } from "react-icons/hi2";
 import styled from "styled-components";
 import DataItem from "../../ui/DataItem";
 import { format } from "date-fns";
-import { Flag } from "../../ui/Flag";
 import { Image } from "../../ui/Image";
 
 const StyledBookDataBox = styled.section`
@@ -73,32 +73,41 @@ const Footer = styled.footer`
 `;
 
 function BookDataBox({ book }) {
-  const { created_at, author, isbn, rackNum, category, description, image } =
-    book;
+  const {
+    created_at,
+    author,
+    name,
+    isbn,
+    rackNum,
+    category,
+    description,
+    image,
+  } = book;
 
   return (
     <StyledBookDataBox>
       <Header>
         <div>
           <HiOutlineBookOpen />
-          <p>{author}</p>
+          <p>{name}</p>
         </div>
 
         <p>{isbn}</p>
       </Header>
 
       <Section>
-        <Book>{image && <Image src={image} alt={`Image of ${image}`} />}</Book>
+        <Book>{image && <Image src={image} alt={`Image of ${name}`} />}</Book>
+
+        {author && <DataItem icon={<HiMiniPencil />}>{author}</DataItem>}
+        {category && <DataItem icon={<HiViewColumns />}>{category}</DataItem>}
+
+        {rackNum && <DataItem icon={<HiTableCells />}>{rackNum}</DataItem>}
 
         {description && (
           <DataItem icon={<HiOutlineChatBubbleBottomCenterText />}>
             {description}
           </DataItem>
         )}
-
-        {category && <DataItem icon={<HiViewColumns />}>{category}</DataItem>}
-
-        {rackNum && <DataItem icon={<HiMiniInboxStack />}>{rackNum}</DataItem>}
       </Section>
 
       <Footer>

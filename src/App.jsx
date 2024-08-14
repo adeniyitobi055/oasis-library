@@ -1,25 +1,24 @@
 import React from "react";
-// import "./App.css";
-// import LoginForm from "./components/Auth/LoginForm";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "./styles/GlobalStyles";
 import Login from "./pages/Login";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
 import Books from "./pages/Books";
-import { Toaster } from "react-hot-toast";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import PageNotFound from "./pages/PageNotFound";
 import Users from "./pages/Users";
 import Issues from "./pages/Issues";
-import { DarkModeProvider } from "./context/DarkModeContext";
 import Members from "./pages/Members";
 import Account from "./pages/Account";
 import Issue from "./pages/Issue";
 import Checkin from "./pages/Checkin";
 import Checkout from "./pages/Checkout";
 import Book from "./pages/Book";
+import Member from "./pages/Member";
 
 function App() {
   const queryClient = new QueryClient({
@@ -52,6 +51,7 @@ function App() {
               <Route path="checkout/:issueId" element={<Checkout />} />
               <Route path="users" element={<Users />} />
               <Route path="members" element={<Members />} />
+              <Route path="members/:memberId" element={<Member />} />
               <Route path="account" element={<Account />} />
             </Route>
             <Route path="login" element={<Login />} />

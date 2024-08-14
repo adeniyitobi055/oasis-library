@@ -2,13 +2,14 @@ import styled from "styled-components";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
-import { HiPencil, HiTrash } from "react-icons/hi2";
+import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
 import { format, isToday } from "date-fns";
 import Tag from "../../ui/Tag";
 import { useDeleteMember } from "./useDeleteMember";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import CreateMembershipForm from "./CreateMembershipForm";
 import { dateDifference, formatDistanceFromNow } from "../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 const StyledCell = styled.div`
   display: flex;
@@ -26,6 +27,8 @@ const StyledCell = styled.div`
 `;
 
 function MemberRow({ member }) {
+  const navigate = useNavigate();
+
   const {
     id: memberId,
     fullName,
@@ -83,6 +86,13 @@ function MemberRow({ member }) {
             <Menus.Toggle id={memberId} />
 
             <Menus.List id={memberId}>
+              <Menus.Button
+                icon={<HiEye />}
+                onClick={() => navigate(`/members/${memberId}`)}
+              >
+                See details
+              </Menus.Button>
+
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>

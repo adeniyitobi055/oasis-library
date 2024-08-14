@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useDeleteBook } from "./useDeleteBook";
-import { useUpdateBook } from "./useUpdateBook";
 import { useBook } from "./useBook";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +12,6 @@ import BookDataBox from "./BookDataBox";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
-import { HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import CreateBookForm from "./CreateBookForm";
 
@@ -25,7 +23,6 @@ const HeadingGroup = styled.div`
 
 function BookDetails() {
   const { deleteBook, isDeleting } = useDeleteBook();
-  const { editBook, isEditing } = useUpdateBook();
   const { isPending, book } = useBook();
   const moveBack = useMoveBack();
   const navigate = useNavigate();
@@ -33,13 +30,13 @@ function BookDetails() {
   if (isPending) return <Spinner />;
   if (!book) return <Empty resourceName="book" />;
 
-  const { id: bookId, name } = book;
+  const { id: bookId } = book;
 
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">{name}</Heading>
+          <Heading as="h1">Book #{bookId}</Heading>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
@@ -49,11 +46,11 @@ function BookDetails() {
       <ButtonGroup>
         <Modal>
           <Modal.Open opens="edit">
-            <Button>Edit Book</Button>
+            <Button>Edit book</Button>
           </Modal.Open>
 
           <Modal.Open opens="delete">
-            <Button variation="danger">Delete Book</Button>
+            <Button variation="danger">Delete book</Button>
           </Modal.Open>
 
           <Modal.Window name="edit">
