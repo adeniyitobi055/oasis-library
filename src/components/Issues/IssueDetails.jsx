@@ -58,6 +58,12 @@ function IssueDetails() {
           </Button>
         )}
 
+        {status === "checked-out" && (
+          <Button onClick={() => navigate(`/checkin/${issueId}`)}>
+            Check in
+          </Button>
+        )}
+
         <Modal>
           <Modal.Open opens="delete">
             <Button variation="danger">Delete issue</Button>
