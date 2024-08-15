@@ -3,7 +3,7 @@ import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
-import { format, isToday } from "date-fns";
+import { differenceInDays, format, isToday } from "date-fns";
 import Tag from "../../ui/Tag";
 import { useDeleteMember } from "./useDeleteMember";
 import ConfirmDelete from "../../ui/ConfirmDelete";
@@ -70,8 +70,8 @@ function MemberRow({ member }) {
           {isToday(new Date(issueDate))
             ? "Today"
             : formatDistanceFromNow(issueDate)}{" "}
-          &rarr; {dateDifference(issueDate, expiryDate)}{" "}
-          {dateDifference(issueDate, expiryDate) > 1 ? "days" : "day"}
+          &rarr; {differenceInDays(expiryDate, issueDate)}{" "}
+          {differenceInDays(expiryDate, issueDate) > 1 ? "days" : "day"}
         </span>
         <span>
           {format(issueDate, "MMM dd yyyy")} &mdash;{" "}
@@ -93,13 +93,17 @@ function MemberRow({ member }) {
                 See details
               </Menus.Button>
 
-              <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-              </Modal.Open>
+              {status !== "active" && (
+                <Modal.Open opens="edit">
+                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                </Modal.Open>
+              )}
 
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-              </Modal.Open>
+              {status === "unconfirmed" && (
+                <Modal.Open opens="delete">
+                  <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                </Modal.Open>
+              )}
             </Menus.List>
             <Modal.Window name="edit">
               <CreateMembershipForm memberToEdit={member} />

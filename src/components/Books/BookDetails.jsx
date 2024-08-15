@@ -46,11 +46,11 @@ function BookDetails() {
       <ButtonGroup>
         <Modal>
           <Modal.Open opens="edit">
-            <Button>Edit book</Button>
+            <Button>Edit</Button>
           </Modal.Open>
 
           <Modal.Open opens="delete">
-            <Button variation="danger">Delete book</Button>
+            <Button variation="danger">Delete</Button>
           </Modal.Open>
 
           <Modal.Window name="edit">

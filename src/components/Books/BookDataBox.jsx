@@ -98,13 +98,28 @@ function BookDataBox({ book }) {
       <Section>
         <Book>{image && <Image src={image} alt={`Image of ${name}`} />}</Book>
 
-        {author && <DataItem icon={<HiMiniPencil />}>{author}</DataItem>}
-        {category && <DataItem icon={<HiViewColumns />}>{category}</DataItem>}
+        {author && (
+          <DataItem icon={<HiMiniPencil />} label="Author">
+            {author}
+          </DataItem>
+        )}
+        {category && (
+          <DataItem icon={<HiViewColumns />} label="Category">
+            {category}
+          </DataItem>
+        )}
 
-        {rackNum && <DataItem icon={<HiTableCells />}>{rackNum}</DataItem>}
+        {rackNum && (
+          <DataItem icon={<HiTableCells />} label="Rack Number">
+            {rackNum}
+          </DataItem>
+        )}
 
         {description && (
-          <DataItem icon={<HiOutlineChatBubbleBottomCenterText />}>
+          <DataItem
+            icon={<HiOutlineChatBubbleBottomCenterText />}
+            label="Description"
+          >
             {description}
           </DataItem>
         )}

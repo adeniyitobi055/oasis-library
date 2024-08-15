@@ -30,7 +30,7 @@ const StyledCell = styled.div`
   font-size: 1.3rem;
   font-weight: 500;
   color: var(--color-grey-600);
-  font-family: "Sono";
+  /* font-family: "Sono"; */
   letter-spacing: 0.5px;
 `;
 

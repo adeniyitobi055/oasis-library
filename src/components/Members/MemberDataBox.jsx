@@ -1,11 +1,15 @@
 import { format, isToday } from "date-fns";
 import { FaUsers } from "react-icons/fa6";
 import styled from "styled-components";
-import { formatDistanceFromNow } from "../../utils/helpers";
+import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
 import { Flag } from "../../ui/Flag";
 import DataItem from "../../ui/DataItem";
 import Tag from "../../ui/Tag";
-import { HiClock, HiMiniInboxStack } from "react-icons/hi2";
+import {
+  HiClock,
+  HiMiniInboxStack,
+  HiOutlineCurrencyDollar,
+} from "react-icons/hi2";
 
 const StyledMemberDataBox = styled.section`
   background-color: var(--color-grey-0);
@@ -62,6 +66,32 @@ const Member = styled.div`
   }
 `;
 
+const Paid = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem 3.2rem;
+  border-radius: var(--border-radius-sm);
+  margin-top: 2.4rem;
+
+  background-color: ${(props) =>
+    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
+  color: ${(props) =>
+    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
+
+  & p:last-child {
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  & svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: currentColor !important;
+  }
+`;
+
 const Footer = styled.div`
   padding: 1.6rem 4rem;
   font-size: 1.2rem;
@@ -82,6 +112,8 @@ function MemberDataBox({ member }) {
     expiryDate,
     countryFlag,
     maxDuration,
+    isPaid,
+    price,
   } = member;
 
   const typeToTagName = {
@@ -120,17 +152,29 @@ function MemberDataBox({ member }) {
         </Member>
 
         {type && (
-          <DataItem icon={<HiMiniInboxStack />}>
+          <DataItem icon={<HiMiniInboxStack />} label="Type">
             <Tag type={typeToTagName[type]}>{type}</Tag>
           </DataItem>
         )}
 
         {maxDuration && (
-          <DataItem icon={<HiClock />}>
+          <DataItem icon={<HiClock />} label="Maximum Duration">
             Borrow a book for max {maxDuration} days
           </DataItem>
         )}
       </Section>
+
+      <Paid isPaid={isPaid}>
+        <DataItem icon={<HiOutlineCurrencyDollar />} label="Total Price">
+          {formatCurrency(price)}
+        </DataItem>
+
+        <p>{isPaid ? "Paid" : "Will pay at property"}</p>
+      </Paid>
+
+      <Footer>
+        <p>Created {format(new Date(created_at), "EEE, MMM dd yyyy")}</p>
+      </Footer>
     </StyledMemberDataBox>
   );
 }

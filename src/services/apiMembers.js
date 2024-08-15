@@ -53,6 +53,8 @@ export async function getMembers({ filter, sortBy, page } = {}) {
 
 export async function createUpdateMember(newMember, id) {
   let status;
+  let isPaid = false;
+
   if (
     isPast(new Date(newMember.expiryDate)) &&
     !isToday(new Date(newMember.expiryDate))
@@ -85,6 +87,8 @@ export async function createUpdateMember(newMember, id) {
         price: newMember.price,
         maxDuration: newMember.maxDuration,
         status: status,
+        expiryDate: newMember.expiryDate,
+        isPaid: isPaid,
       },
     ]);
 
@@ -99,8 +103,9 @@ export async function createUpdateMember(newMember, id) {
           type: newMember.type,
           price: newMember.price,
           maxDuration: newMember.maxDuration,
-          status: status,
+          status: newMember.status,
           expiryDate: newMember.expiryDate,
+          isPaid: newMember.isPaid,
         },
       ])
       .eq("id", id);

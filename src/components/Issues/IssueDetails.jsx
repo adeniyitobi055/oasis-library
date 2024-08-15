@@ -13,7 +13,6 @@ import IssueDataBox from "./IssueDataBox";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import { HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const HeadingGroup = styled.div`
@@ -66,7 +65,7 @@ function IssueDetails() {
 
         <Modal>
           <Modal.Open opens="delete">
-            <Button variation="danger">Delete issue</Button>
+            <Button variation="danger">Delete</Button>
           </Modal.Open>
 
           <Modal.Window name="delete">

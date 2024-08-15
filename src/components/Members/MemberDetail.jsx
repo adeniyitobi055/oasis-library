@@ -15,6 +15,7 @@ import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
 import CreateMembershipForm from "./CreateMembershipForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import ButtonContainer from "../../ui/ButtonContainer";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -31,7 +32,7 @@ function MemberDetail() {
   if (isPending) return <Spinner />;
   if (!member) return <Empty resourceName="member" />;
 
-  const { id: memberId, status } = member;
+  const { id: memberId, status, isPaid } = member;
 
   const statusToTagName = {
     unconfirmed: "blue",
@@ -51,35 +52,50 @@ function MemberDetail() {
 
       <MemberDataBox member={member} />
 
-      <ButtonGroup>
-        <Modal>
-          <Modal.Open opens="edit">
-            <Button>Edit book</Button>
-          </Modal.Open>
+      <ButtonContainer>
+        <ButtonGroup>
+          <Modal>
+            {status !== "active" && (
+              <>
+                <Button onClick={() => navigate(`/activate/${memberId}`)}>
+                  Activate
+                </Button>
 
-          <Modal.Open opens="delete">
-            <Button variation="danger">Delete member</Button>
-          </Modal.Open>
+                <Modal.Open opens="edit">
+                  <Button>Edit</Button>
+                </Modal.Open>
+              </>
+            )}
+          </Modal>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Modal>
+            {status === "unconfirmed" && (
+              <Modal.Open opens="delete">
+                <Button variation="danger">Delete</Button>
+              </Modal.Open>
+            )}
 
-          <Modal.Window name="edit">
-            <CreateMembershipForm memberToEdit={member} />
-          </Modal.Window>
+            <Modal.Window name="edit">
+              <CreateMembershipForm memberToEdit={member} />
+            </Modal.Window>
 
-          <Modal.Window name="delete">
-            <ConfirmDelete
-              resourceName="member"
-              onConfirm={() =>
-                deleteMember(memberId, { onSettled: () => navigate(-1) })
-              }
-              disabled={isDeleting}
-            />
-          </Modal.Window>
-        </Modal>
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                resourceName="member"
+                onConfirm={() =>
+                  deleteMember(memberId, { onSettled: () => navigate(-1) })
+                }
+                disabled={isDeleting}
+              />
+            </Modal.Window>
+          </Modal>
 
-        <Button variation="secondary" onClick={moveBack}>
-          Back
-        </Button>
-      </ButtonGroup>
+          <Button variation="secondary" onClick={moveBack}>
+            Back
+          </Button>
+        </ButtonGroup>
+      </ButtonContainer>
     </>
   );
 }

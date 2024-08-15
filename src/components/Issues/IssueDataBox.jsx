@@ -129,15 +129,18 @@ function IssueDataBox({ issue }) {
           <p>National ID {nationalID}</p>
         </Member>
 
-        {observations && (
-          <DataItem icon={<HiOutlineChatBubbleBottomCenterText />}>
-            {observations}
+        {type && (
+          <DataItem icon={<HiMiniInboxStack />} label="Type">
+            <Tag type={typeToTagName[type]}>{type}</Tag>
           </DataItem>
         )}
 
-        {type && (
-          <DataItem icon={<HiMiniInboxStack />}>
-            <Tag type={typeToTagName[type]}>{type}</Tag>
+        {observations && (
+          <DataItem
+            icon={<HiOutlineChatBubbleBottomCenterText />}
+            label="Observation"
+          >
+            {observations}
           </DataItem>
         )}
       </Section>

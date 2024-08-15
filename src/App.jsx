@@ -19,6 +19,7 @@ import Checkin from "./pages/Checkin";
 import Checkout from "./pages/Checkout";
 import Book from "./pages/Book";
 import Member from "./pages/Member";
+import Activate from "./pages/Activate";
 
 function App() {
   const queryClient = new QueryClient({
@@ -52,6 +53,7 @@ function App() {
               <Route path="users" element={<Users />} />
               <Route path="members" element={<Members />} />
               <Route path="members/:memberId" element={<Member />} />
+              <Route path="activate/:memberId" element={<Activate />} />
               <Route path="account" element={<Account />} />
             </Route>
             <Route path="login" element={<Login />} />
