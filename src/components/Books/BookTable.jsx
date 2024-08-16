@@ -32,12 +32,11 @@ function BookTable({ searchQuery }) {
 
   return (
     <Menus>
-      <Table columns="0.5fr 1.8fr 1.3fr 1.5fr 0.7fr 1.2fr 0.4fr">
+      <Table columns="0.5fr 1.8fr 1.3fr 0.7fr 1.2fr 0.4fr">
         <Table.Header>
           <div></div>
           <div>Book</div>
           <div>Author</div>
-          <div>ISBN</div>
           <div>Rack</div>
           <div>Category</div>
           <div></div>

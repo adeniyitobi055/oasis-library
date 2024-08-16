@@ -10,7 +10,7 @@ import Input from "../../ui/Input";
 import toast from "react-hot-toast";
 import Button from "../../ui/Button";
 import { differenceInDays, isAfter, isBefore, parseISO } from "date-fns";
-import { formatDate } from "../../utils/helpers";
+import { dateDifference, formatDate } from "../../utils/helpers";
 import Textarea from "../../ui/Textarea";
 import { useCreateIssue } from "./useCreateIssue";
 
@@ -47,6 +47,7 @@ function CreateIssueForm({ onCloseModal }) {
 
     return 0;
   }
+  console.log("duration", calculateDuration());
 
   if (isPending || isLoading) return <SpinnerMini />;
 
@@ -83,15 +84,17 @@ function CreateIssueForm({ onCloseModal }) {
       return;
     }
 
+    const duration = calculateDuration();
+
     const issueData = {
       ...data,
       memberId: selectedMember,
       bookId: selectedBook,
+      duration,
     };
 
     createIssue(issueData, {
       onSuccess: (data) => {
-        console.log("New issue: ", createIssue);
         reset();
         onCloseModal?.();
       },

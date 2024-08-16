@@ -11,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 const Img = styled.img`
   display: block;
-  width: 10rem;
+  width: 7rem;
   /* height: 5rem; */
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1.8;
   object-position: center;
   object-fit: contain;
   transform: scale(1.5) translateX(-7px);
@@ -22,14 +22,15 @@ const Img = styled.img`
 const Book = styled.div`
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-grey-600);
-  font-family: "Sono";
+  color: var(--color-grey-800);
+  /* font-family: "Sono"; */
+  letter-spacing: 0.5px;
 `;
 
 const StyledCell = styled.div`
   font-size: 1.3rem;
   font-weight: 500;
-  color: var(--color-grey-600);
+  color: var(--color-grey-800);
   /* font-family: "Sono"; */
   letter-spacing: 0.5px;
 `;
@@ -68,7 +69,6 @@ function BookRow({ book }) {
       <Img src={image} />
       <Book>{name}</Book>
       <StyledCell>{author}</StyledCell>
-      <StyledCell>{isbn}</StyledCell>
       <StyledCell>{rackNum}</StyledCell>
       <StyledCell>{category}</StyledCell>
       <div>

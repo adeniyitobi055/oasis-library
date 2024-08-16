@@ -9,14 +9,16 @@ import {
   HiEye,
   HiTrash,
 } from "react-icons/hi2";
-import { format, isToday } from "date-fns";
-import { dateDifference, formatDistanceFromNow } from "../../utils/helpers";
+import { differenceInDays, format, isToday } from "date-fns";
+import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 
 const StyledCell = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  color: var(--color-grey-800);
+  font-weight: 500;
 
   & span:first-child {
     font-weight: 500;
@@ -58,8 +60,8 @@ function IssueRow({ issue }) {
           {isToday(new Date(borrowDate))
             ? "Today"
             : formatDistanceFromNow(borrowDate)}{" "}
-          &rarr; {dateDifference(borrowDate, returnDate)}{" "}
-          {dateDifference(borrowDate, returnDate) > 1 ? "days" : "day"}
+          &rarr; {differenceInDays(returnDate, borrowDate)}{" "}
+          {differenceInDays(returnDate, borrowDate) > 1 ? "days" : "day"}
         </span>
         <span>
           {format(borrowDate, "MMM dd yyyy")} &mdash;{" "}

@@ -8,7 +8,7 @@ import Tag from "../../ui/Tag";
 import { useDeleteMember } from "./useDeleteMember";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import CreateMembershipForm from "./CreateMembershipForm";
-import { dateDifference, formatDistanceFromNow } from "../../utils/helpers";
+import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 
 const StyledCell = styled.div`
