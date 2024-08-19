@@ -47,7 +47,7 @@ function TodayItem({ activity }) {
           Check out
         </Button>
       )}
-      {status === "checked-in" && (
+      {status === "checked-out" && (
         <Button
           size="small"
           variation="primary"

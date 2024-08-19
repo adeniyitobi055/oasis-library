@@ -3,6 +3,7 @@ import styled from "styled-components";
 // import { GiBookAura } from "react-icons/gi";
 import { GiBookCover } from "react-icons/gi";
 // import { GiBlackBook } from "react-icons/gi";
+import { HiBuildingLibrary } from "react-icons/hi2";
 
 const StyledLogo = styled.div`
   text-align: center;
@@ -40,7 +41,7 @@ function Logo() {
     <StyledLogo>
       {/* <Img src="./logo_lightmode.png" alt="Logo" /> */}
       <StyledLogoIcon>
-        <GiBookCover
+        <HiBuildingLibrary
           style={{ fontSize: "90px", color: "var(--color-brand-900)" }}
         />
       </StyledLogoIcon>
